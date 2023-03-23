@@ -1,3 +1,6 @@
+var button = document.getElementById("countBtn") 
+button.addEventListener("click", counting)
+
 function counting() {
     let start = document.getElementById('start')
     let finish = document.getElementById('finish')
@@ -13,10 +16,10 @@ function counting() {
     if(str.length == 0 || end.length == 0 || stp.length == 0 || str == end) {
         alert('Verifique se os dados foram inseridos corretamente!')
     } else {
-        var array = []
-        var flag = 0
-        if(str < 0 && end < 0){ // if flagged turns str & end to positive
-            flag = 1
+        let array = []
+        let isInputNegative = false
+        if(str < 0 && end < 0){ // if both negative turns str & end to positive
+            isInputNegative = true
             str = numToPositive(str)
             end = numToPositive(end)
         }
@@ -25,8 +28,8 @@ function counting() {
         } else if(str > end) {
             array = countDown(str, end, stp)
         }
-        if(flag == 1){
-            array = arrayToNegative(array)
+        if(isInputNegative){
+            array = mapArrayToNegative(array)
         }
         formatCountInnerHTML(count, array) 
     }
@@ -96,9 +99,9 @@ function numToPositive(num) { // returns the absolute value of num
     return num
 }
 
-function arrayToNegative(array) { // returns negative value of the absolute value of array
+function mapArrayToNegative(array) { // returns negative value of the absolute value of array
     console.log('converting array to negative...')
-    tempArray = array.map(element => -Math.abs(element))
+    let tempArray = array.map(element => -Math.abs(element))
     console.log(`array to negative: ${tempArray}`)
     return tempArray
 }
