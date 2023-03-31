@@ -1,4 +1,17 @@
-string = 'MMMX'
+import romanNumber from "./romanNumber_class.js"
+import Table from "./table_class.js"
+
+var M = new romanNumber( 'M' , 1000)
+var D = new romanNumber( 'D' , 500)
+var C = new romanNumber( 'C' , 100)
+var L = new romanNumber( 'L' , 50)
+var X = new romanNumber( 'X' , 10)
+var V = new romanNumber( 'V' , 5)
+var I = new romanNumber( 'I' , 1)
+
+var romanTable = new Table( M , D , C , L , X , V , I )
+
+var string = 'MMMX'
 
 console.log(`fromRoman: ${fromRoman(string)}`)
 
@@ -10,44 +23,15 @@ function fromRoman(str) {
         let realValue = numMatchFor(isolatedRoman)
         valueArray.push(realValue)
     }
-    result = combineValues(valueArray)
+    let result = combineValues(valueArray)
     return result
 }
 
 function numMatchFor(letter) {
     let num
-    switch (letter) {
-        case 'M':
-            num = 1000
-            break;
 
-        case 'D':
-            num = 500
-            break;
+    
 
-        case 'C':
-            num = 100
-            break;
-
-        case 'L':
-            num = 50
-            break;
-
-        case 'X':
-            num = 10
-            break;
-
-        case 'V':
-            num = 5
-            break;
-
-        case 'I':
-            num = 1
-            break;
-
-        default:
-            console.log(`[ERROR] invalid value: ${letter}`)
-    }
     return num
 }
 
@@ -69,4 +53,3 @@ function combineValues(array) {
 
     return res
 }
-
