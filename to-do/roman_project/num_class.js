@@ -1,6 +1,6 @@
-export default class romanNumber {
+export default class Num {
     constructor ( roman , decimal ) {
         this.roman = roman
-        this.decimal = decimal
+        this.decimal = Number(decimal)
     }
 }
