@@ -3,6 +3,7 @@ import Num from "./num_class.js"
 var M = new Num('M' , 1000)
 var CM = new Num('CM' , 900)
 var D = new Num('D' , 500)
+var CD = new Num('CD' , 400)
 var C = new Num('C' , 100)
 var XC = new Num('XC' , 90)
 var L = new Num('L' , 50)
@@ -12,7 +13,7 @@ var V = new Num('V' , 5)
 var IV = new Num('IV' , 4)
 var I = new Num('I' , 1)
 
-var romanTable = [ M , D , C , L , X , V , I , CM , XC , IX , IV ]
+var romanTable = [ M , D , C , L , X , V , I , CM , CD , XC , IX , IV ]
 
 var string = 'MMMCMXCIX'
 var number = 3999
@@ -41,24 +42,13 @@ function fromRoman(str) {
 
     return result
 }
-
 function fromDecimal(num) {
     console.log('converting from decimal...')
 
     let result = 0
-    let mult = [ 1000 , 100 , 10 , 1 ]
     let numArray = sliceString(num.toString())
 
-    for (let i = 0; i < numArray.length; i++) {
-        numArray[i] = numArray[i] * mult[i]
-        if(numArray[i] >= 1000) {
-            let n = numArray[i] / 1000
-            numArray.slice(1 , 4)
-
-        }
-    }
-
-    
+    /* consider thousand, decimal, unit cases*/
         
     let letterArray = findMatchFor(numArray)
 
@@ -66,7 +56,6 @@ function fromDecimal(num) {
 
     return result
 }
-
 function sliceString(string) {
     console.log('slicing string...')
 
@@ -77,7 +66,6 @@ function sliceString(string) {
     }
     return charArray
 }
-
 function findMatchFor(array) {
     console.log(`finding match for: ${array}...`)
 
@@ -109,7 +97,6 @@ function findMatchFor(array) {
 
     return matchArray
 }
-
 function compareRoman(char , pair) {
     console.log('comparing roman...')
     if(char == pair.roman) {
@@ -117,7 +104,6 @@ function compareRoman(char , pair) {
     }
     return null
 }
-
 function compareDecimal(char , pair) {
     console.log('comparing decimal...')
     if(char == pair.decimal) {
