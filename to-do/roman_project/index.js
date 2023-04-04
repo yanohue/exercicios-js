@@ -1,143 +1,161 @@
 import Num from "./num_class.js"
 
-var string = 'MMMCMXCIX'
-var number = 3999
+var I = new Num('I' , 1)
+var IV = new Num('IV' , 4)
+var V = new Num('V' , 5)
+var IX = new Num('IX' , 9)
+var X = new Num('X' , 10)
+var L = new Num('L' , 50)
+var XC = new Num('XC' , 90)
+var C = new Num('C' , 100)
+var CD = new Num('CD' , 400)
+var D = new Num('D' , 500)
+var CM = new Num('CM' , 900)
+var M = new Num('M' , 1000)
 
-console.log(`fromRoman: ${fromRoman(string)}`)
-console.log(`fromDecimal: ${fromDecimal(number)}`)
+/* This table could be done better, dont know how tho */
+var romanTable = [ I , IV , V , IX , X , L , XC , C , CD , D , CM , M ] 
 
-function fromRoman(str) {               //done
+var dataInput = 'MMMCMXCIX'
+/* var dataInput = 3999 */
+
+console.log(`result: ${convert(dataInput)}`)
+
+function convert(input) {                   //done
+    console.log('converting data input...')
+    if(isDecimal(input)) {
+        return fromDecimal(input)
+    } else {
+        return fromRoman(input)
+    }
+}
+
+function isDecimal(data) {                  //done
+    console.log('checking if is decimal...')
+    if(typeof data == 'number') {
+        return true
+    } else {
+        return false
+    }
+}
+
+function fromRoman(str) {                   //done
     console.log('converting from roman...')
 
-    let result = 0
-    let isRoman = true
-    let letterArray = sliceString(str)
-    let numArray = findMatchFor(letterArray, isRoman)
-    console.log(`num array: ${numArray}`)
+    let decimals = []
 
-    for(let i = 0; i < numArray.length; i++) {
+    let charArray = createArray(str)
+
+    charArray.forEach(char => {
+        let index = linearSearch(char , romanTable)
+        decimals.push(romanTable[index].decimal)
+        console.log(`decimals ${decimals}`)
+    })
+    return combine(decimals)
+}
+
+function combine(array) {                   //its garbage, needs refactor
+    console.log('combining decimals...')
+
+    let result
+
+    for(let i = 0; i < array.length; i++) {
         let num
-        if(numArray[i] < numArray[i + 1]) {
-            num = -Math.abs(numArray[i])
+        if(array[i] < array[i + 1]) {
+            num = -Math.abs(array[i])
         } else {
-            num = Math.abs(numArray[i])
+            num = Math.abs(array[i])
         }
         result = result + num
     }
-
     return result
 }
-function fromDecimal(num) {             //work in progress
+
+function linearSearch(input, table) {       //done
+    console.log('applying linear search...')
+
+    for (let i = 0; i < table.length; i++) {
+        if(input == table[i].roman) {
+            return i
+        }
+    }
+    return console.log('[ERROR] failed linear search')
+}
+
+function fromDecimal(num) {                 //done
     console.log('converting from decimal...')
 
-    let result = 0
-    let isRoman = false
-    let numArray = sliceString(num.toString())
+    let numArray = createArray(num.toString())
+    let multpliedReversedArray = useDecimalPlaces(numArray)
+    let decomposedDecimalArray = decomposeThousandsPlaces(multpliedReversedArray)
+    let romans = []
 
-    //[ERROR] findMatchFor doesnt work for fromDecimal function
-
-    /* consider thousand, decimal, unit cases
-    example:num = 3999
-            numArray = 3,9,9,9
-            letterArray = M,M,M,CM,XC,IX
-            result = MMMCMXCIX 
-    Variable numArray needs to be multiplied
-    by the correct factor, and needed special 
-    attention to the thousand decimal places */
-        
-    let letterArray = findMatchFor(numArray, isRoman)
-
-    console.log(`letter array: ${letterArray}`)
-
-    result = letterArray.join('')
-
-    return result
-}
-function findMatchFor(array, isRoman) { //work in progress
-    /* receives an array of characters, each being a number, 
-    matches and converts roman numbers to decimal numbers
-    and vice-versa, returns the resulting array */
-    console.log(`finding match for: ${array}...`)
-
-    let matchArray = []
-    let match
-
-    /* forEach use is inefficient here, because doesnt stop 
-    when already found the correct pairing >>nested loop<< 
-    here is a oportunity to apply better search algorithm */
-    array.forEach(character => {
-        romanTable.forEach(pairing => {
-            if(isRoman) {
-                match = compareRoman(character , pairing)
-                if(match != null) {
-                    console.log(`push: ${match}`)
-                    matchArray.push(match)
-                }
-            } else {
-                match = compareDecimal(character , pairing)
-                if(match != null) {
-                    console.log(`push: ${match}`)
-                    matchArray.push(match)
-                }
-            }
-        })
+    decomposedDecimalArray.forEach(numeral => {
+        let index = binarySearch(numeral , romanTable)
+        romans.push(romanTable[index].roman)
     })
+    return romans.join('')
+}
 
-    return matchArray
-}
-function compareRoman(char , pair) {    //done
-    console.log('comparing roman...')
-    if(char == pair.roman) {
-        return pair.decimal
-    }
-    return null
-}
-function compareDecimal(char , pair) {  //done
-    console.log('comparing decimal...')
-    if(char == pair.decimal) {
-        return pair.roman
-    }
-    return null
-}
-function sliceString(string) {          //done
-    console.log('slicing string...')
+function createArray(str) {                 //done
+    console.log('creating array...')
 
     let charArray = []
-    for(let i = 0; i < string.length; i++) {
-        let char = string.slice(i, i + 1)
+    for(let i = 0; i < str.length; i++) {
+        let char = str.slice(i, i + 1)
         charArray.push(char)
     }
     return charArray
 }
 
-function binarySearch(input) {
-    let M = new Num('M' , 1000)
-    let CM = new Num('CM' , 900)
-    let D = new Num('D' , 500)
-    let CD = new Num('CD' , 400)
-    let C = new Num('C' , 100)
-    let XC = new Num('XC' , 90)
-    let L = new Num('L' , 50)
-    let X = new Num('X' , 10)
-    let IX = new Num('IX' , 9)
-    let V = new Num('V' , 5)
-    let IV = new Num('IV' , 4)
-    let I = new Num('I' , 1)
-    let zero = new Num('0' , 0)
+function useDecimalPlaces(array) {          //done
+    console.log('using decimal places...')
 
-    /* This table could be done better, dont know how tho */
+    let numArray = []
+    let reversedArray = array.reverse()
 
-    let romanTable = [ M , CM , D , CD , C , XC , L , X , IX , V , IV , I , zero ]
-
-    let pivotIndex = romanTable.length / 2
-
-    if(romanTable[pivotIndex].decimal == input) {
-        return pivotIndex
-    } else if(romanTable[pivotIndex].decimal < input) {
-        //search 
-    } else {
-
+    for (let i = 0; i < reversedArray.length; i++) {
+        let num = array[i] * Math.pow(10, i)
+        numArray.push(num)
     }
+    reversedArray = numArray
+    return reversedArray
+}
 
-    return result
+function decomposeThousandsPlaces(array) {  //done
+    console.log('decomposing into smaller parts...')
+
+    let num = array[3] / 1000
+    let result = array.slice(0, 3)
+
+    for (let i = 0; i < num; i++) {
+        result.push(1000)
+    }
+    return result.reverse()
+}
+
+function binarySearch(input, table) {       //done
+    console.log('applying binary search...')
+
+    let lowIndex =  0
+    let highIndex = table.length - 1
+
+    while(lowIndex != highIndex) {
+        let pivotIndex = Math.floor((lowIndex + highIndex) / 2)
+
+        if(table[pivotIndex].decimal == input) {
+            return pivotIndex
+        } else if (table[lowIndex].decimal == input) {
+            return lowIndex
+        } else if (table[highIndex].decimal == input) {
+            return highIndex
+        }
+        else if(table[pivotIndex].decimal < input) {
+            lowIndex = pivotIndex + 1
+        }
+        else {
+            highIndex = pivotIndex
+        }
+    }
+    return console.log('[ERROR] failed at binary search')
 }
