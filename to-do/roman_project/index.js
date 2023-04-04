@@ -1,22 +1,5 @@
 import Num from "./num_class.js"
 
-var M = new Num('M' , 1000)
-var CM = new Num('CM' , 900)
-var D = new Num('D' , 500)
-var CD = new Num('CD' , 400)
-var C = new Num('C' , 100)
-var XC = new Num('XC' , 90)
-var L = new Num('L' , 50)
-var X = new Num('X' , 10)
-var IX = new Num('IX' , 9)
-var V = new Num('V' , 5)
-var IV = new Num('IV' , 4)
-var I = new Num('I' , 1)
-
-/* This table could be done better, dont know how tho */
-
-var romanTable = [ M , CM , D , CD , C , XC , L , X , IX , V , IV , I ]
-
 var string = 'MMMCMXCIX'
 var number = 3999
 
@@ -125,4 +108,36 @@ function sliceString(string) {          //done
         charArray.push(char)
     }
     return charArray
+}
+
+function binarySearch(input) {
+    let M = new Num('M' , 1000)
+    let CM = new Num('CM' , 900)
+    let D = new Num('D' , 500)
+    let CD = new Num('CD' , 400)
+    let C = new Num('C' , 100)
+    let XC = new Num('XC' , 90)
+    let L = new Num('L' , 50)
+    let X = new Num('X' , 10)
+    let IX = new Num('IX' , 9)
+    let V = new Num('V' , 5)
+    let IV = new Num('IV' , 4)
+    let I = new Num('I' , 1)
+    let zero = new Num('0' , 0)
+
+    /* This table could be done better, dont know how tho */
+
+    let romanTable = [ M , CM , D , CD , C , XC , L , X , IX , V , IV , I , zero ]
+
+    let pivotIndex = romanTable.length / 2
+
+    if(romanTable[pivotIndex].decimal == input) {
+        return pivotIndex
+    } else if(romanTable[pivotIndex].decimal < input) {
+        //search 
+    } else {
+
+    }
+
+    return result
 }
